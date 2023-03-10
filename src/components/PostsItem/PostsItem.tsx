@@ -8,6 +8,7 @@ import { AppDispatch } from "../../store"
 import styles from './PostsItem.module.sass'
 import updateIcon from '../../assets/images/update.png'
 import { clearComments } from "../../actions/clearComments"
+import { ChildCommentState, CommentState } from "../../types"
 
 
 const PostsItem: FC = () => {
@@ -42,7 +43,7 @@ const PostsItem: FC = () => {
    const openCommentAnswers = (id: number) => {
       dispatch(getChildComments(id))
    }
-
+   console.log(childComments)
    return (
       <div className={styles.post}>
          <div
@@ -81,7 +82,7 @@ const PostsItem: FC = () => {
                   onClick={() => setWillUpdatePosts(true)}
                />
             </div>
-            {comments?.map((comment: any) => {
+            {comments?.map((comment: CommentState) => {
                return (
                   <div
                      className={styles.comment}
@@ -99,11 +100,15 @@ const PostsItem: FC = () => {
                      )}
                      {comment.id === childComments?.id && (
                         <div className={styles.commentAnswers}>
-                           {Object.values(childComments.childComments)?.map(({ dataComment }: any) => {
+                           {Object.values(childComments.childComments)?.map(({ dataComment }: ChildCommentState) => {
                               return (
-                                 <div className={styles.childComment} key={dataComment.id}>
-                                    <div className={styles.childCommentAuthor}>{dataComment.by}</div>
-                                    <div className={styles.childCommentText} dangerouslySetInnerHTML={{ __html: dataComment.text }}></div>
+                                 <div className={styles.childComment} key={dataComment?.id}>
+                                    <div className={styles.childCommentAuthor}>{dataComment?.by}</div>
+                                    {dataComment?.text
+                                       ? (
+                                          <div className={styles.childCommentText} dangerouslySetInnerHTML={{ __html: dataComment.text }}></div>)
+                                       : <div className={styles.childCommentText}></div>
+                                    }
                                  </div>
                               )
                            })}

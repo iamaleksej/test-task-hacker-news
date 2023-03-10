@@ -14,11 +14,30 @@ export interface OnePostState {
       kids: number[] | undefined
    } | undefined;
    loading: boolean;
-   comments: number[] | [] | undefined;
+   comments: CommentState[] | [] | undefined;
    childComments: {
       id: number;
-      childComments: [];
+      childComments: ChildCommentState[] | [];
    };
+}
+
+export interface CommentState {
+   id: number;
+   by: string;
+   text: string;
+   time: number;
+   kids?: number[];
+   type: string;
+   parent: number;
+}
+
+export interface ChildCommentState {
+   id: number | null;
+   dataComment: {
+      id: number;
+      by: string;
+      text: string;
+   } | null
 }
 
 export interface arrPostsState {
@@ -46,11 +65,5 @@ export interface GetCommentsState {
    options: {};
 }
 
-export interface CommentState {
-   id: number;
-   by: string;
-   text: string;
-   time: number;
-   kids: number[]
-}
+
 

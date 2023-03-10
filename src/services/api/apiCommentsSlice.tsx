@@ -1,10 +1,11 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
+import { ChildCommentState, CommentState } from "../../types";
 
 
 export const getComments = createAsyncThunk("onePost/getComments", async (
    comments: number[]) => {
    try {
-      let arrComments: any[] = []
+      let arrComments: CommentState[] = []
       for (let id of comments) {
          try {
             const res = await fetch(
@@ -32,7 +33,7 @@ export const getChildComments = createAsyncThunk("onePost/getChildComments", asy
       const dataComments = await resComments.json()
       if (dataComments.kids) {
          const { kids } = dataComments
-         let arrComments: any[] = []
+         let arrComments: ChildCommentState[] = []
          for (let i = 0; i < kids.length; i++) {
             try {
                const resChildComments = await fetch(
@@ -41,7 +42,7 @@ export const getChildComments = createAsyncThunk("onePost/getChildComments", asy
 
                const dataChildComments = await resChildComments.json()
 
-               let obj: { id: number | null, dataComment: {} | null } = {
+               let obj: ChildCommentState = {
                   id: null,
                   dataComment: null
                }
